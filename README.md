@@ -23,26 +23,42 @@ This project is fully local and does not rely on external APIs.
 ## Project Structure
 
 ```text
-NEXORA/
-├── favicon/                   # App icons
+NEXORA-2.0/
+├── backend/
+│   └── server.js              # Local backend (Ollama proxy / API logic)
+│
+├── favicon/
+│   └── code.ico               # Application favicon
+│
 ├── node_modules/
+│
 ├── src/
-│   ├── App.tsx                # Main UI
-│   ├── main.tsx               # React entry point
-│   ├── prism.d.ts             # Prism.js type declarations
-│   ├── types.ts               # Shared TypeScript types
-│   ├── hooks/
-│   │   └── useChat.ts         # Chat + streaming logic
 │   ├── components/
+│   │   ├── AdminPanel.tsx     # Admin interface
 │   │   └── settingsModal.tsx  # Settings modal
+│   │
+│   ├── context/
+│   │   └── AuthContext.tsx    # Authentication context
+│   │
+│   ├── hooks/
+│   │   └── useChat.ts         # Chat logic + streaming
+│   │
 │   ├── pages/
-│   │   ├── Landing.tsx
-│   │   ├── Login.tsx
-│   │   └── Register.tsx
-│   └── styles/
-│       ├── index.css          # Global styles
-│       └── settings.css       # Modal styles      
+│   │   ├── Landing.tsx        # Landing page
+│   │   ├── Login.tsx          # Login page
+│   │   └── Register.tsx       # Register page
+│   │
+│   ├── styles/
+│   │   └── index.css          # Global styles
+│   │
+│   ├── App.tsx                # Main application shell
+│   ├── main.tsx               # React entry point
+│   └── prism.d.ts             # Prism.js type declarations
+│
+├── .env                       # Environment variables
+├── .gitignore
 ├── index.html
+├── LICENSE
 ├── package.json
 ├── package-lock.json
 ├── tsconfig.json
