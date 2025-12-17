@@ -1,7 +1,5 @@
 /* ─────────────────────────────────────────────
-   FILTERI – layout i spacing
-   primjenjuje se SAMO na Admin panel,
-   tab: Filteri (data-tab="filters")
+   ADMIN-PANEL
    ───────────────────────────────────────────── */
 
 .modal[data-tab='filters'] .modal-form {
@@ -11,7 +9,6 @@
   margin-top: 4px;
 }
 
-/* Svaka grupa kao mali "card" */
 .modal[data-tab='filters'] .form-group {
   padding: 8px 12px 10px;
   border-radius: 14px;
@@ -29,14 +26,12 @@
   border-color: rgba(148, 163, 184, 0.6);
 }
 
-/* Fokus na cijeli "card" kad je select aktivan */
 .modal[data-tab='filters'] .form-group:focus-within {
   border-color: #38bdf8;
   box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
   transform: translateY(-1px);
 }
 
-/* Malo kompaktniji label samo za admin filtere */
 .modal[data-tab='filters'] .field-label {
   margin-bottom: 2px;
   font-size: 10px;
@@ -45,12 +40,12 @@
 }
 
 /* ─────────────────────────────────────────────
-   SELECT – za admin filtere (ljepši dropdown)
+   SELECT 
    ───────────────────────────────────────────── */
 
 .modal[data-tab='filters'] select.field-input {
   border-radius: 999px;
-  border: none;                /* border je na .form-group */
+  border: none;
   background: transparent;
   padding: 9px 34px 9px 12px;
   font-size: 13px;
@@ -62,8 +57,6 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-
-  /* custom strelica */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
@@ -79,14 +72,13 @@
   box-shadow: none;
 }
 
-/* Gumbi na dnu malo odmaknuti */
 .modal[data-tab='filters'] .form-actions {
   margin-top: 10px;
   gap: 8px;
 }
 
 /* ─────────────────────────────────────────────
-   TABLICA – STATISTIKA (tvoj kod)
+   TABLE-STATISTIC
    ───────────────────────────────────────────── */
 
 .admin-table-wrapper {

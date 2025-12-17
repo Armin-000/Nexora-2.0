@@ -1,4 +1,4 @@
-// src/pages/Login.tsx
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -43,7 +43,6 @@ const Login: React.FC = () => {
       const data = await res.json();
       login(data.token);
 
-      // Uspješna registracija
       navigate("/chat");
     } catch (err: any) {
       setError(err.message);

@@ -1,4 +1,4 @@
-// src/pages/Landing.tsx
+
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -6,7 +6,6 @@ const Landing: React.FC = () => {
   return (
     <div className="app-root theme-light">
       <div className="chat-shell">
-        {/* Gornji bar (isti stil kao u App.tsx) */}
         <header className="topbar">
           <div className="topbar-main">
             <div className="topbar-title">NEXORA</div>
@@ -17,7 +16,6 @@ const Landing: React.FC = () => {
           </div>
         </header>
 
-        {/* Tijelo – centrirani „modal” */}
         <main className="chat-body">
           <div
             style={{
@@ -41,7 +39,6 @@ const Landing: React.FC = () => {
                   "0 18px 45px rgba(15,23,42,0.22), 0 0 0 1px rgba(148,163,184,0.35)",
               }}
             >
-              {/* Gornji „chip” */}
               <div
                 style={{
                   display: "inline-flex",
@@ -69,7 +66,6 @@ const Landing: React.FC = () => {
                 <span>Local AI coding assistant</span>
               </div>
 
-              {/* Naslov + opis */}
               <h1
                 style={{
                   margin: 0,
@@ -96,7 +92,6 @@ const Landing: React.FC = () => {
                 services.
               </p>
 
-              {/* Dvije kolone benefita */}
               <div
                 style={{
                   display: "flex",
@@ -160,7 +155,6 @@ const Landing: React.FC = () => {
                 </div>
               </div>
 
-              {/* Blaga razdjelnica */}
               <div
                 style={{
                   height: 1,
@@ -171,7 +165,6 @@ const Landing: React.FC = () => {
                 }}
               />
 
-              {/* CTA gumbi */}
               <div
                 style={{
                   display: "flex",

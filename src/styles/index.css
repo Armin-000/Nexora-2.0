@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "prismjs/themes/prism-tomorrow.css";
 
-/* Prism – globalno prelamanje koda */
 pre[class*="language-"],
 code[class*="language-"] {
   white-space: pre-wrap;
@@ -354,12 +353,9 @@ body {
   border: 1px solid transparent;
   box-sizing: border-box;
   overflow-wrap: anywhere;
-
-  /* ✅ KLJUČNO: flex prelamanje dugih stringova u bubbleu */
   min-width: 0;
 }
 
-/* ✅ NOVO: i sadržaj bubble-a mora imati min-width:0 (često je pravi uzrok “bježanja”) */
 .bubble-content {
   min-width: 0;
 }
@@ -409,7 +405,6 @@ body {
   word-break: break-word;
 }
 
-/* ✅ USER: kad zalijepiš dugačak kod kao tekst — uvijek prelamaj, nikad ne bježi */
 .bubble-user .segment-text,
 .bubble-user .segment-text * {
   max-width: 100%;
@@ -418,7 +413,6 @@ body {
   word-break: break-word;
 }
 
-/* (opcionalno, ali lijepo): user “kod” kao monospace */
 .bubble-user .segment-text p,
 .bubble-user .segment-text li {
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
@@ -798,7 +792,7 @@ body {
 }
 
 /* =========================
-   Responsive (JEDAN media query - bez konflikta)
+   Responsive
    ========================= */
 
 @media (max-width: 640px) {
@@ -815,13 +809,11 @@ body {
     padding: 8px 10px;
   }
 
-  /* Opći tekst na mobitelu */
   .segment-text {
     white-space: normal;
     font-size: 12px;
   }
 
-  /* ✅ USER poruke: zadrži nove redove + prelamanje (override) */
   .bubble-user .segment-text,
   .bubble-user .segment-text * {
     white-space: pre-wrap;

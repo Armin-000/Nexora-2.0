@@ -1,4 +1,4 @@
-// src/hooks/useChat.ts
+
 import { useState, useCallback } from 'react';
 import { Message, Role, OllamaChunk } from '../types';
 

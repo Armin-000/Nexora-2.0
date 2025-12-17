@@ -5,10 +5,8 @@ interface User {
   id: number;
   email: string;
   username: string;
-  // password?: string;
   role: string;
   device_type?: string;
-  // status?: string;
   iat?: number;
   exp?: number;
 }
@@ -40,7 +38,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  // Učitaj token nakon refresh-a
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -48,13 +45,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         const decoded: User = jwtDecode(token);
 
-        // Provjeri je li token istekao
         if (decoded.exp && decoded.exp * 1000 < Date.now()) {
           localStorage.removeItem("token");
           setUser(null);
           logoutServer();
         } else {
-          setUser(decoded); // token važi → user je ulogiran
+          setUser(decoded);
         }
       } catch (err) {
         console.error("Invalid token:", err);
@@ -63,14 +59,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  // Login funkcija - spremi token + dekodiraj korisnika
   const login = (token: string) => {
     localStorage.setItem("token", token);
     const decoded: User = jwtDecode(token);
     setUser(decoded);
   };
 
-  // Logout funkcija - odjava sa servera, ukloni token + postavi korisnika na null
   const logout = () => {
     logoutServer();
     localStorage.removeItem("token");

@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "./context/AuthContext";
 
-// Prism languages (load order matters)
-import "prismjs/components/prism-markup"; // HTML
+// Prism languages
+import "prismjs/components/prism-markup";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
@@ -43,14 +43,13 @@ const resolveLanguage = (raw?: string) => {
   if (lang === "html" || lang === "markup") return "markup";
   if (lang === "css") return "css";
 
-  // fallback
   return "javascript";
 };
 
 const parseMessageContent = (content: string, messageId: number): Segment[] => {
   const segments: Segment[] = [];
 
-  // Robustnije: hvata i jezike tipa "c++", "objective-c", "bash", "json", itd.
+  // Regex
   const codeRegex = /```([^\s`]+)?\s*\r?\n([\s\S]*?)```/g;
 
   let lastIndex = 0;
@@ -62,7 +61,6 @@ const parseMessageContent = (content: string, messageId: number): Segment[] => {
     const matchStart = match.index;
     const matchEnd = matchStart + fullMatch.length;
 
-    // tekst prije code bloka
     if (matchStart > lastIndex) {
       const textPart = content.slice(lastIndex, matchStart);
       const normalized = textPart.replace(/\n{3,}/g, "\n\n");
@@ -89,7 +87,6 @@ const parseMessageContent = (content: string, messageId: number): Segment[] => {
     blockIndex += 1;
   }
 
-  // tekst poslije zadnjeg code bloka
   if (lastIndex < content.length) {
     const textPart = content.slice(lastIndex);
     const normalized = textPart.replace(/\n{3,}/g, "\n\n");
@@ -102,7 +99,6 @@ const parseMessageContent = (content: string, messageId: number): Segment[] => {
     }
   }
 
-  // ako nema ništa segmentirano, vrati kao jedan text segment
   if (segments.length === 0) {
     segments.push({
       type: "text",
@@ -133,7 +129,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
 
   const highlighted = Prism.highlight(
     seg.content,
-    // @ts-ignore
     Prism.languages[lang] || Prism.languages.javascript,
     lang
   );
@@ -382,7 +377,6 @@ const App: React.FC = () => {
                 const isAssistant = msg.role === "assistant";
                 const isLastAssistant = isAssistant && msg.id === lastMessageId;
 
-                // ✅ Code blocks samo za ASSISTANT
                 const segments: Segment[] = isAssistant
                   ? parseMessageContent(msg.content, msg.id)
                   : [

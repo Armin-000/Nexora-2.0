@@ -1,4 +1,4 @@
-// src/components/AdminPanel.tsx
+
 import React, { useState, useRef, useEffect } from "react";
 import "../styles/settings.css";
 import "../styles/AdminPanel.css";
@@ -10,53 +10,44 @@ interface AdminPanelProps {
 
 type AdminTab = "filters" | "stats" | "logs";
 
-// Tip podatka koji ćeš kasnije dobivati iz baze
 interface AdminResultRow {
   id: number;
   korisnik: string;
   uredaj: string;
   aktivnost: string;
-  vrijeme: string; // npr. ISO string ili formatirani datum
+  vrijeme: string;
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   const [adminTab, setAdminTab] = useState<AdminTab>("filters");
-
-  // 4 glavna polja (filteri)
   const [aktivnost, setAktivnost] = useState("");
   const [filterKorisnika, setFilterKorisnika] = useState("");
   const [filterUredaja, setFilterUredaja] = useState("");
   const [filterAktivnosti, setFilterAktivnosti] = useState("");
 
-  // Rezultati (kasnije iz baze)
   const [results, setResults] = useState<AdminResultRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // kratka info poruka
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
 
-  // refs za tab gumbe (indikator)
   const filtersTabRef = useRef<HTMLButtonElement | null>(null);
   const statsTabRef = useRef<HTMLButtonElement | null>(null);
   const logsTabRef = useRef<HTMLButtonElement | null>(null);
 
   const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({});
 
-  // ⛏️ placeholder za budući poziv prema backendu/bazi
   const fetchAdminResults = async (params: {
     aktivnost: string;
     filterKorisnika: string;
     filterUredaja: string;
     filterAktivnosti: string;
   }): Promise<AdminResultRow[]> => {
-    // ❗ OVDJE ĆEŠ KASNIJE SPOJITI BAZU (API, fetch, axios, sl.)
-    // Sad samo simuliramo delay + fake podatke
+
     console.log("Fetch iz baze (kasnije): ", params);
 
     await new Promise((resolve) => setTimeout(resolve, 600));
 
-    // DEMO PODACI – kasnije zamijeni s podacima iz baze
     return [
       {
         id: 1,
@@ -106,7 +97,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
       setStatusMsg(
         "Filteri su primijenjeni. Prikazujem rezultate u statistici."
       );
-      setAdminTab("stats"); // automatski prebaci na Statistika tab
+      setAdminTab("stats");
     } catch (err: any) {
       console.error(err);
       setErrorMsg(
@@ -117,7 +108,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  // Dinamičko pozicioniranje indikatora (isto kao u SettingsModalu)
   useEffect(() => {
     if (!isOpen) return;
 
@@ -159,7 +149,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
       }}
     >
       <div className="modal" data-tab={adminTab}>
-        {/* HEADER */}
         <div className="modal-header">
           <h2>Admin panel</h2>
           <button
@@ -184,7 +173,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* TABOVI */}
         <div className="modal-tabs">
           <div className="tab-indicator" style={indicatorStyle} />
 
@@ -207,7 +195,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
             className={`modal-tab ${adminTab === "stats" ? "active" : ""}`}
             onClick={() => {
               setAdminTab("stats");
-              // ne brišemo results, samo poruke
               setErrorMsg(null);
               setStatusMsg(null);
             }}
@@ -229,13 +216,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* BODY */}
         <div className="modal-body">
-          {/* TAB: FILTERI */}
           {adminTab === "filters" && (
             <div className="tab-content">
               <form className="modal-form" onSubmit={handleApplyFilters}>
-                {/* AKTIVNOST */}
                 <div className="form-group">
                   <label className="field-label" htmlFor="aktivnost">
                     Aktivnost
@@ -253,8 +237,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     <option value="kreiranje">Kreiranje</option>
                   </select>
                 </div>
-
-                {/* FILTER KORISNIKA */}
                 <div className="form-group">
                   <label className="field-label" htmlFor="filterKorisnika">
                     Filter korisnika
@@ -271,8 +253,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     <option value="guest">Gosti</option>
                   </select>
                 </div>
-
-                {/* FILTER UREĐAJA */}
                 <div className="form-group">
                   <label className="field-label" htmlFor="filterUredaja">
                     Filter uređaja
@@ -289,8 +269,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     <option value="tablet">Tablet</option>
                   </select>
                 </div>
-
-                {/* FILTER AKTIVNOSTI */}
                 <div className="form-group">
                   <label className="field-label" htmlFor="filterAktivnosti">
                     Filter aktivnosti
@@ -339,8 +317,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
               </form>
             </div>
           )}
-
-          {/* TAB: STATISTIKA — TABLICA REZULTATA */}
           {adminTab === "stats" && (
             <div className="tab-content">
               <div className="modal-help-section">
@@ -384,8 +360,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
           )}
-
-          {/* TAB: LOGOVI — placeholder za kasnije */}
           {adminTab === "logs" && (
             <div className="tab-content">
               <div className="modal-help">

@@ -11,12 +11,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Endpoint za testiranje servera
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Konekcija na MySQL
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
@@ -33,7 +31,6 @@ db.connect((err) => {
   }
 });
 
-// Registracija
 app.post("/register", async (req, res) => {
   const { username, email, password, device_type } = req.body;
 
@@ -50,7 +47,6 @@ app.post("/register", async (req, res) => {
       (err) => {
         if (err) {
           console.error("❌ Error inserting into database:", err.message);
-          // Provjera dupliciranih unosa
           if (err.code === "ER_DUP_ENTRY") {
             if (err.sqlMessage.includes("username")) {
               return res.status(409).json({ error: "Username already taken." });
@@ -72,7 +68,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Login
 app.post("/login", (req, res) => {
   const { email, password, device_type, status } = req.body;
 
@@ -92,14 +87,11 @@ app.post("/login", (req, res) => {
     const updateStatusSql = "UPDATE chatbot_users SET status = ? WHERE id = ?";
     db.query(updateStatusSql, [status || "active", results[0].id]);
 
-    // Generiranje JWT tokena
     const user = {
       id: results[0].id,
       email: results[0].email,
       username: results[0].username,
-      // password: results[0].password,
       role: results[0].role,
-      // status: results[0].status,
       device_type: device_type || "unknown",
     };
     const token = jwt.sign(user, process.env.JWT_SECRET, {
@@ -110,31 +102,28 @@ app.post("/login", (req, res) => {
   });
 });
 
-// Middleware za provjeru JWT tokena
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) return res.status(401).json({ error: "Token missing" });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ error: "Invalid token" });
-    req.user = user; // dodajemo user info u request
+    req.user = user;
     next();
   });
 }
 
-// Endpoint za promjenu lozinke
 app.post("/change-password", authenticateToken, async (req, res) => {
   const { currentPassword, newPassword, confirmationPassword } = req.body;
-  const userId = req.user.id; // iz tokena
+  const userId = req.user.id;
 
   if (!currentPassword || !newPassword) {
     return res.status(400).json({ error: "All fields required" });
   }
 
   try {
-    // Dohvat trenutne lozinke korisnika iz baze
     const sql = "SELECT password FROM chatbot_users WHERE id = ?";
     db.query(sql, [userId], async (err, results) => {
       if (err) return res.status(500).json({ error: "Database error" });
@@ -143,9 +132,8 @@ app.post("/change-password", authenticateToken, async (req, res) => {
 
       const hashedPassword = results[0].password;
 
-      // Provjera stare lozinke
       const match = await bcrypt.compare(currentPassword, hashedPassword);
-      // Check if new password is same as current
+
       const isSame = await bcrypt.compare(newPassword, hashedPassword);
       if (isSame) {
         return res.status(400).json({
@@ -153,7 +141,6 @@ app.post("/change-password", authenticateToken, async (req, res) => {
         });
       }
 
-      // Check if new password matches confirmation password
       if (confirmationPassword && newPassword !== confirmationPassword) {
         return res
           .status(400)
@@ -163,10 +150,8 @@ app.post("/change-password", authenticateToken, async (req, res) => {
       if (!match)
         return res.status(401).json({ error: "Current password is incorrect" });
 
-      // Hashiranje nove lozinke
       const newHashed = await bcrypt.hash(newPassword, 10);
 
-      // Update u bazi
       const updateSql =
         "UPDATE chatbot_users SET password = ?, updated_at = NOW() WHERE id = ?";
       db.query(updateSql, [newHashed, userId], (err) => {
@@ -181,7 +166,6 @@ app.post("/change-password", authenticateToken, async (req, res) => {
   }
 });
 
-// Endpoint za brisanje računa
 app.post("/delete-account", authenticateToken, async (req, res) => {
   const { password } = req.body;
   const userId = req.user.id;
@@ -212,7 +196,6 @@ app.post("/delete-account", authenticateToken, async (req, res) => {
   }
 });
 
-// Logout endpoint
 app.post("/logout", authenticateToken, (req, res) => {
   const userId = req.user.id;
   const sql = "UPDATE chatbot_users SET status = 'not active' WHERE id = ?";

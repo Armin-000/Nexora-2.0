@@ -30,21 +30,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   });
 
   const [deleteConfirm, setDeleteConfirm] = useState("");
-
   const [pwdError, setPwdError] = useState<string | null>(null);
   const [pwdSuccess, setPwdSuccess] = useState<string | null>(null);
-
   const navigate = useNavigate();
-
-  // Refs for tab buttons (for dynamic indicator)
   const accountTabRef = useRef<HTMLButtonElement | null>(null);
   const helpTabRef = useRef<HTMLButtonElement | null>(null);
   const deleteTabRef = useRef<HTMLButtonElement | null>(null);
-
-  // Style for tab indicator (width + translateX)
   const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({});
-
-  // Backend call – password change
   const changePasswordOnServer = async (params: {
     currentPassword: string;
     newPassword: string;
@@ -72,7 +64,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     }
   };
 
-  // Backend call – delete account
   const deleteAccountOnServer = async (params: { password: string }) => {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("User not authenticated");
@@ -179,10 +170,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         return;
       }
 
-      // Uspešno obrisan nalog
       setPwdSuccess(resp.message);
 
-      // Logout user i zatvori modal
       localStorage.removeItem("token");
       onClose();
       navigate("/login", { replace: true });
@@ -195,7 +184,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   const handleClose = () => {
-    // Reset local state
     setSettingsTab("account");
     setPwdForm({ current: "", next: "", confirm: "" });
     setDeleteConfirm("");
@@ -204,7 +192,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     onClose();
   };
 
-  // Dynamic positioning & width for indicator
   useEffect(() => {
     if (!isOpen) return;
 
@@ -233,7 +220,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     };
   }, [settingsTab, isOpen]);
 
-  // 🔹 IMPORTANT: after all hooks
   if (!isOpen) {
     return null;
   }
@@ -427,9 +413,40 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     (stack, versions, error messages) as clearly as possible and
                     Nexora will give you a more precise solution.
                   </p>
-                  <button type="button" className="secondary-btn">
-                    Open documentation (placeholder)
-                  </button>
+                  <div className="pdf-card">
+                    <div className="pdf-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 2v6h6" />
+                        <path d="M8 13h8" />
+                        <path d="M8 17h5" />
+                      </svg>
+                    </div>
+
+                    <div className="pdf-meta">
+                      <div className="pdf-title">Nexora Documentation</div>
+                      <div className="pdf-subtitle">PDF • User guide & setup instructions</div>
+                    </div>
+
+                    <div className="pdf-actions">
+                      <a
+                        href="/docs/nexora-help.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="pdf-btn"
+                      >
+                        Open
+                      </a>
+
+                      <a
+                        href="/docs/nexora-help.pdf"
+                        download
+                        className="pdf-btn pdf-btn--primary"
+                      >
+                        Download
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

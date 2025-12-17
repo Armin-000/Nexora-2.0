@@ -1,4 +1,4 @@
-// src/pages/Register.tsx
+
 import React, { useState } from "react";
 import { data, Link, useNavigate } from "react-router-dom";
 
@@ -43,7 +43,6 @@ const Register: React.FC = () => {
         return;
       }
 
-      // Uspješna registracija
       setError(resp.message);
       setTimeout(() => navigate("/login"), 1800);
     } catch (err: any) {
